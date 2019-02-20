@@ -1,5 +1,7 @@
 package com.douzone.mysite.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +18,24 @@ public class UserService {
 		userDao.insert(userVo);
 		// 2. email 주소 확인하는 메일 보내기 
 	}
-	public void login(UserVo userVo) {
+	
+	public UserVo login(String email, String password) {
+		return userDao.get(email, password);
+	}
+
+	public void logout(HttpSession session) {
 		
 	}
-	public void modify(UserVo userVo) {
-		userDao.update(userVo);
+
+	public UserVo modifyselect(UserVo userVo) {
+		return userDao.get(userVo.getNo());
 	}
+
+	public UserVo modify(UserVo userVo) {
+		return userDao.update(userVo);
+	}
+	
+
+	
+
 }

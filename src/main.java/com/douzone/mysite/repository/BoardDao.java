@@ -186,6 +186,8 @@ public class BoardDao {
 		
 		return list;
 	}
+	
+	
 	public BoardVo get(long no) {
 		BoardVo boardVo = null;
 		

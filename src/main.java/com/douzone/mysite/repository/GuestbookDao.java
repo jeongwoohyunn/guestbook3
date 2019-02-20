@@ -15,6 +15,7 @@ import com.douzone.mysite.vo.GuestbookVo;
 
 @Repository
 public class GuestbookDao {
+	
 	public List<GuestbookVo> getList(int page) {
 		List<GuestbookVo> list = new ArrayList<GuestbookVo>();
 
@@ -78,7 +79,7 @@ public class GuestbookDao {
  		return list;
 	}
 	
-	public int delete( GuestbookVo vo ) {
+	public int delete( GuestbookVo guestbookVo ) {
 		int count = 0;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -93,8 +94,9 @@ public class GuestbookDao {
 				"    and password=?";
 			pstmt = conn.prepareStatement( sql );
 
-			pstmt.setLong( 1, vo.getNo() );
-			pstmt.setString( 2, vo.getPassword() );
+			System.out.println(guestbookVo.getNo());
+			pstmt.setLong( 1, guestbookVo.getNo() );
+			pstmt.setString( 2, guestbookVo.getPassword() );
 
 			count = pstmt.executeUpdate();
 		} catch (SQLException e) {
