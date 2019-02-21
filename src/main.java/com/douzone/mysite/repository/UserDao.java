@@ -1,251 +1,54 @@
 package com.douzone.mysite.repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.douzone.mysite.exception.UserDaoException;
 import com.douzone.mysite.vo.UserVo;
 
 @Repository
 public class UserDao {
-	public UserVo get(String email) {
-		UserVo result = null;
 
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+	@Autowired
+	private DataSource dataSource;
 
-		try {
-			conn = getConnection();
+	@Autowired
+	private SqlSession sqlSession;
 
-			String sql = 
-				" select no, name" + 
-				"   from user" + 
-				"  where email=?";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, email);
-
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				long no = rs.getLong(1);
-				String name = rs.getString(2);
-
-				result = new UserVo();
-				result.setNo(no);
-				result.setName(name);
-			}
-		} catch (SQLException e) {
-			System.out.println("error :" + e);
-		} finally {
-			// 자원 정리
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
+	public UserVo get(long no) {
+		return null;
 	}
-	
+
+	public UserVo get(String email) {
+		return sqlSession.selectOne("user.getByEmail", email);
+	}
+
 	public UserVo update(UserVo userVo) {
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = getConnection();
-			
-			String sql ="update user set name=? ,gender=? where no="+userVo.getNo();
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, userVo.getName());			
-			pstmt.setString(2, userVo.getGender());
-			
-			pstmt.executeUpdate();
-			
-			
-		} catch (SQLException e) {
-			System.out.println("Error : "+e);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
+		return sqlSession.selectOne("user.update", userVo);
+	}
+
+	public UserVo get(Long no) {
+		return sqlSession.selectOne("user.getByNo", no);
+	}
+
+	public UserVo get(String email, String password) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("password", password);
+		UserVo userVo = sqlSession.selectOne("user.getByEmailAndPassword", map);
 		return userVo;
 	}
-	
-	public UserVo get(Long no) {
-		UserVo result = null;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			conn = getConnection();
-			
-			String sql ="select name, email, password, gender from user where no="+no;
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				String name = rs.getString(1);
-				String email = rs.getString(2);
-				String password = rs.getString(3);
-				String gender = rs.getString(4);
-				
-				result = new UserVo();
-				result.setNo(no);
-				result.setName(name);
-				result.setEmail(email);
-				result.setPassword(password);;
-				result.setGender(gender);
-			}
-				
-		} catch (SQLException e) {
-			System.out.println("Error : "+e);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(rs != null) {
-					rs.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return result;
-	}
-	
-	public UserVo get(String email, String password) {
-		UserVo result = null;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			conn = getConnection();
-			
-			String sql ="select no, name from user where email=? and password=? ";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, email);
-			pstmt.setString(2, password);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				Long no = rs.getLong(1);
-				String name = rs.getString(2);
-				
-				result = new UserVo();
-				result.setNo(no);
-				result.setName(name);
-				
-			}
-			
-			
-		} catch (SQLException e) {
-			System.out.println("Error : "+e);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(rs != null) {
-					rs.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return result;
-	}
-	
-	public int insert(UserVo vo) throws UserDaoException {
-		int count = 0;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
 
-		try {
-			conn = getConnection();
-
-			String sql = 
-				" insert" + 
-				"   into user" + 
-				" values ( null, ?, ?, ?, ?, now() )";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, vo.getName());
-			pstmt.setString(2, vo.getEmail());
-			pstmt.setString(3, vo.getPassword());
-			pstmt.setString(4, vo.getGender());
-
-			count = pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			throw new UserDaoException("회원 정보 저장 실패");
-		} finally {
-			// 자원 정리
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				throw new UserDaoException("회원 정보 저장 실패");
-			}
-		}
-
+	public int insert(UserVo vo) {
+		// namspace의 id
+		int count = sqlSession.insert("user.insert", vo);
 		return count;
+		// return count = sqlSession.insert("user.insert",vo);
 	}
 
-	private Connection getConnection() throws SQLException{
-		Connection conn = null;
-		try {
-			// 1. JDBC Driver(MYSQL) 로딩
-			Class.forName("com.mysql.jdbc.Driver");
-			//pripertiy -> build path를 등록해줘야된다.
-
-			// 2. 연결하기 ( jdbc:연결할database://ip:port/database이름 ) port번호는 생략가능하다.
-			// url과 id와 password를 같이 입력해준다. (Connection 객체 얻어오기)
-			String url = "jdbc:mysql://localhost:3306/webdb";
-			conn = DriverManager.getConnection(url,"webdb","webdb");
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패 : "+e);
-		}
-		return conn;
-	}
 }

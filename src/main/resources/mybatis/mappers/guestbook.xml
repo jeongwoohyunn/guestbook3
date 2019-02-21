@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="guestbook"><!-- namespace가 있는 이유는 user의 insert와 구분하기 위해 -->
+	<insert id="insert" parameterType="guestbookvo"><!-- 얘의 객체를 매핑 -->
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+		<![CDATA[
+		select last_insert_id();
+		]]>
+		</selectKey>
+		<![CDATA[
+			insert into guestbook 
+			values ( null, #{name}, #{password}, #{message}, now() )
+		]]>
+	</insert>
+	<select id="getList" resultType="guestbookvo">
+	<![CDATA[
+	 select no, name, message,date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate
+				from guestbook 
+				 order by reg_date desc
+			]]>
+	</select>
+	<delete id="delete">
+		<![CDATA[
+				  delete 
+				  from guestbook 
+				  where no=#{no}
+				  and password=#{password}
+		]]>
+	</delete>
+	<select id="getListpage" resultType="guestbookvo">
+	<![CDATA[
+	 select no, name, message,date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate
+				from guestbook order by reg_date desc limit ?, 5
+			]]>
+	</select>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+	<insert id="insert" parameterType="uservo"><!-- 얘의 객체를 매핑 -->
+		<![CDATA[
+			insert into user values ( null, #{name}, #{email}, #{password}, #{gender}, now())
+		]]>
+	</insert>
+	<select id="getByEmailAndPassword" parameterType="map" resultType="uservo">
+		<!-- 값을 담아올땐 중복안되도록 -->
+		<![CDATA[
+			select no, name from user where email=#{email} and password=#{password}
+		]]>
+	</select>
+	<select id="getByEmail" parameterType="string" resultType="uservo">
+		<!-- 값이 하나일땐 아무값이나 넣어도 상관없다. -->
+		<![CDATA[
+			select no, name from user where email=#{email}
+		]]>
+	</select>
+	<select id="getByNo" parameterType="string" resultType="uservo">
+		<![CDATA[
+			select name, email, password, gender from user where no=#{no}
+		]]>
+	</select>
+	<update id="update" parameterType="uservo">
+		<![CDATA[
+			update user set name=#{name} ,gender=#{gender} where no= userVo.#{no}
+		]]>
+	</update>
+</mapper>
