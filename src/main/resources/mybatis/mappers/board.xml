@@ -2,15 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
-	<select id="getTotalCount" parameterType="string" resultType="int">
+	<!-- <select id="getTotalCount" parameterType="string" resultType="int">
 		<![CDATA[
-		select count(*)
-		  from board
+			select count(*) from board
 		]]>
-		<if test="_parameter != null and _parameter!=''">
-			
-		</if>	
-	</select>
+		<if test="_parameter != null and _parameter !=''">
+			<![CDATA[
+				where title like '%${_parameter }%'
+			]]>
+		</if>
+	</select> -->
 	
 	<insert id="insert" parameterType="boardvo">
 		<choose>
@@ -18,19 +19,19 @@
 			<![CDATA[
 			insert 
 			  into board
-			values (null, #{title }, #{contents }, sysdate, 0, 0, 0...);
+			values (null, #{title }, #{contents }, sysdate, 0, 0, 0...)
 			]]>
 			</when>
 			<otherwise>
 			<![CDATA[
 			insert 
 			  into board
-			values (null, #{title }, #{contents }, sysdate, #{groupNo }, #{depth }, #{);
+			values (null, #{title }, #{contents }, sysdate, #{groupNo }, #{depth }, #{user_no})
 			]]>
 			</otherwise>
 		</choose>
 	</insert>
-	<delete id="delete">
+	<delete id="delete" parameterType="boardvo">
 		<![CDATA[
 			delete from board where no= #{no}
 		]]>
