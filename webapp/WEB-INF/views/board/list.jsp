@@ -36,12 +36,12 @@
 							<c:if test="${vo.depth !=0 }">
 							<img src="${pageContext.servletContext.contextPath }/assets/images/reply.png">
 							</c:if>
-							 --%><td><a href="${pageContext.servletContext.contextPath }/board?a=view&no=${vo.no}">${vo.title }</a></td>
+							 --%><td><a href="${pageContext.servletContext.contextPath }/board/view?group_no=${vo.group_no}&order_no=${vo.order_no}">${vo.title }</a></td>
 							<td>${vo.name }</td>
 							<td>${vo.hit }</td>
 							<td>${vo.write_date }</td>
 							<td>
-							<a href="${pageContext.servletContext.contextPath }/board?a=delete&no=${vo.no}"
+							<a href="${pageContext.servletContext.contextPath }/board/delete?no=${vo.no}"
 								class="del"> <img src="/mysite2/assets/images/recycle.png"></img></a>
 							</td>
 						</tr>

@@ -34,7 +34,6 @@
 		<property name="username" value="webdb" />
 		<property name="password" value="webdb" />
 	</bean>
-
 	<!-- MyBatis SqlSessionFactoryBean setter 주입-->
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -47,5 +46,4 @@
 		class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
-
 </beans>

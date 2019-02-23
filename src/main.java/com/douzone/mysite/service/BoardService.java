@@ -14,20 +14,13 @@ public class BoardService {
 	
 	@Autowired
 	private BoardDao boardDao;
-	
 	public List<BoardVo> list(){
 		return boardDao.getList();
 	}
-	/*public Map<String, Object> list(){
-		List<BoardVo> list = boardDao.getList();
-		int totalCount = boardDao.count();
-		
-		 pager 알고리즘
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", list);
-		map.put("totalPageCount", toTalPageCount);
-		
-		return map;}
-		*/
+	public void delete(BoardVo boardVo) {
+		boardDao.delete(boardVo);
+	}
+	public void insert(BoardVo boardVo) {
+		boardDao.insert(boardVo);
+	}
 }
