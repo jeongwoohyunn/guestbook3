@@ -23,8 +23,8 @@ public class UserDao {
 		return sqlSession.selectOne("user.getByEmail", email);
 	}
 
-	public UserVo update(UserVo userVo) {
-		return sqlSession.selectOne("user.update", userVo);
+	public int update( UserVo userVo ) {
+		return sqlSession.update( "user.update", userVo );
 	}
 
 	public UserVo get(Long no) {

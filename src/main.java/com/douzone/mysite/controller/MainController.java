@@ -4,18 +4,29 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.douzone.mysite.service.SiteService;
+
+
 @Controller
 public class MainController {
-	
-	@RequestMapping({"","/main"})//멀티매핑이 된다.
-	public String main() {
-		//return "/WEB-INF/views/main/index.jsp";
-		return "/main/index";//spring servlet에서 jsp붙여주므로 빼도된다.
-		//매핑된 주소로 검색하면 return값으로 들어간다.
+
+	@Autowired
+	private SiteService siteService;
+
+	@RequestMapping( { "/", "/main" } )
+	public String index( Model model ) {
+		//SiteVo siteVo = siteService.getSite();
+		//model.addAttribute("site", siteVo);
+		return "main/index";
+	}
+
+	@ResponseBody
+	@RequestMapping( "/hello" )
+	public String hello() {
+		return "<h1>안녕하세요.</h1>";
 	}
 }
-/* 						@ResponseBody
- *  modelandview
- *  string -> viewname
- *  objcet x
- */
