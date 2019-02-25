@@ -1,19 +1,14 @@
 package com.douzone.mysite.controller;
-
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.douzone.mysite.service.UserService;
 import com.douzone.mysite.vo.UserVo;
 import com.douzone.security.Auth;
 import com.douzone.security.AuthUser;
-
 @Controller
 @RequestMapping( "/user" )
 public class UserController {
@@ -36,7 +31,6 @@ public class UserController {
 	public String login() {
 		return "user/login";
 	}
-
 	@RequestMapping( "/joinsuccess" )
 	public String joinsuccess(){
 		return "user/joinsuccess";
@@ -46,7 +40,7 @@ public class UserController {
 	@RequestMapping( value="/modify", method=RequestMethod.GET )
 	public String modify( @AuthUser UserVo authUser, Model model ){
 		System.out.println( authUser );
-		
+
 		UserVo userVo = userService.getUser( authUser.getNo() );
 		model.addAttribute( "userVo", userVo );
 		return "user/modify";
@@ -63,10 +57,10 @@ public class UserController {
 		
 		userVo.setNo( authUser.getNo() );
 		userService.modifyUser( userVo );
-		
+
 		// session의 authUser 변경
 		authUser.setName(userVo.getName());
-		
+
 		return "redirect:/user/modify?result=success";
 	}
 }

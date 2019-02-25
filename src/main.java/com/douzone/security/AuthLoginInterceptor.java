@@ -15,28 +15,30 @@ import com.douzone.mysite.vo.UserVo;
 public class AuthLoginInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	private UserService userService;
-	
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-//		ApplicationContext ac = 
-//			WebApplicationContextUtils.getWebApplicationContext(request.getServletContext()); 
-//		UserService userService = ac.getBean( UserService.class );
-		
+		//ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
+		//UserService userService = ac.getBean(UserService.class);
+
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		
-		UserVo userVo = userService.getUser(email, password);
+
+		UserVo userVo = userService.login(email, password);
+
 		if(userVo == null) {
-			response.sendRedirect(request.getContextPath() + "/user/login");
+			/* 인증실패 */
+			response.sendRedirect(request.getContextPath()+"/user/login");
 			return false;
 		}
-		
-		// 로그인 처리
-		HttpSession session = request.getSession(true);
-		session.setAttribute("authUser", userVo);
 
-		response.sendRedirect(request.getContextPath() + "/");
+		//로그인 처리
+		HttpSession session = request.getSession(true);
+		session.setAttribute("authuser", userVo);
+
+		response.sendRedirect(request.getContextPath()+"/");
 		return false;
 	}
+
 }

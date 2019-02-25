@@ -26,8 +26,8 @@ public class UserService {
 		//2. 인증 메일 보내기
 	}
 	
-	public UserVo getUser( String email, String password ) {
-		return userDao.get( email, password );
+	public UserVo login(String email, String password) {
+		return userDao.get(email, password);
 	}
 	
 	public UserVo getUser( Long no ) {

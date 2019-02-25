@@ -7,8 +7,6 @@ import com.douzone.mysite.service.SiteService;
 import com.douzone.security.Auth;
 import com.douzone.security.Auth.Role;
 
-
-
 //@Auth(Role.ADMIN)
 @Controller
 @RequestMapping("/admin")
