@@ -29,7 +29,7 @@ public class AuthLoginInterceptor extends HandlerInterceptorAdapter {
 
 		if(userVo == null) {
 			/* 인증실패 */
-			response.sendRedirect(request.getContextPath()+"/user/login");
+			response.sendRedirect(request.getContextPath()+"/user/login?result=fail");
 			return false;
 		}
 

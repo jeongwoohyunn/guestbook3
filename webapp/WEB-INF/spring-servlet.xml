@@ -9,7 +9,8 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-
+	<!-- auto proxy -->
+	<aop:aspectj-autoproxy />
 	<!-- validator, conversionService, messageConverter를 자동 등록 -->
 	<mvc:annotation-driven />
 	<mvc:annotation-driven>
@@ -46,10 +47,10 @@
 		<!-- AuthInterceptor -->
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/user/auth"/>
-			<mvc:exclude-mapping path="/user/logout"/>
-			<mvc:exclude-mapping path="/assets/**"/>
-			<mvc:exclude-mapping path="/"/>
+			<mvc:exclude-mapping path="/user/auth" />
+			<mvc:exclude-mapping path="/user/logout" />
+			<mvc:exclude-mapping path="/assets/**" />
+			<mvc:exclude-mapping path="/" />
 			<bean class="com.douzone.security.Authlnterceptor" />
 		</mvc:interceptor>
 

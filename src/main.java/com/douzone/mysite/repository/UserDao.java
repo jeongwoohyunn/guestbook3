@@ -23,8 +23,8 @@ public class UserDao {
 		return sqlSession.selectOne("user.getByEmail", email);
 	}
 
-	public int update( UserVo userVo ) {
-		return sqlSession.update( "user.update", userVo );
+	public int update(UserVo userVo) {
+		return sqlSession.update("user.update", userVo);
 	}
 
 	public UserVo get(Long no) {
@@ -36,6 +36,7 @@ public class UserDao {
 		map.put("email", email);
 		map.put("password", password);
 		UserVo userVo = sqlSession.selectOne("user.getByEmailAndPassword", map);
+		
 		return userVo;
 	}
 

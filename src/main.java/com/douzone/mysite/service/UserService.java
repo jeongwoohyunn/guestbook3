@@ -34,8 +34,12 @@ public class UserService {
 		return userDao.get( no );
 	}
 	
-	public boolean modifyUser( UserVo userVo ) {
-		return userDao.update( userVo ) == 1;
+	public UserVo modifyselect(UserVo userVo) {
+		return userDao.get(userVo.getNo());
+	}
+	
+	public void modify(UserVo userVo) {
+		userDao.update(userVo);
 	}
 	
 }

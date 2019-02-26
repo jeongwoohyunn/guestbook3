@@ -7,30 +7,31 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-@ControllerAdvice		//모든 오류가 여기로 몰린다.
+@ControllerAdvice
 public class GlobalExceptionHandler {
 	
-	private static final Log LOG = LogFactory.getLog( GlobalExceptionHandler.class );
-	
-	@ExceptionHandler(Exception.class)
-	public ModelAndView handlerException(
-			HttpServletRequest request,
-			Exception e) {
+	@ExceptionHandler( Exception.class )
+	public ModelAndView handleException( HttpServletRequest request, Exception e ) throws Exception {
 		
-		// 1. 로깅 작업
+		//1. 로깅
 		StringWriter errors = new StringWriter();
-		e.printStackTrace(new PrintWriter(errors));
-		LOG.error(errors.toString());
+		e.printStackTrace( new PrintWriter( errors ) );
 		
-		// 2. 시스템 오류 안내페이지 전환
+		//2. 안내페이지 가기
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("errors",	errors.toString());
-		mav.setViewName("error/exception");
+		mav.addObject( "uri", request.getRequestURI() );
+		mav.addObject( "exception", errors.toString() );
+		mav.setViewName( "error/exception" );
 		
 		return mav;
 	}
+	
+	
 }
