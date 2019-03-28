@@ -115,8 +115,8 @@
 				<configuration>
 					<url>http://127.0.0.1:8080/manager/text</url>
 					<path>/mysite3-spring</path>
-					<username>jenkins</username>
-					<password>jenkins</password>
+					<username>hihit22</username>
+					<password>wjddngus159!</password>
 				</configuration>
 			</plugin>
 		</plugins>
